@@ -1,114 +1,157 @@
-# ◈ Keyless OSINT Workbench
+# ◈ PLAYGRID
 
-A **local-first, keyless OSINT investigation workbench**. The core application performs
-meaningful investigations of **usernames, domains, emails, IP addresses, and images** with
-**no API keys, no accounts, and no paid services** — immediately after:
+A modern, self-contained **browser-game discovery portal** built for GitHub Pages.
+Dark, fast, dependency-free — a curated catalogue of legitimate free browser games,
+trustworthy game platforms, useful search engines, and an honest built-in
+**network connectivity check**.
+
+**Everything is static.** No backend, no build step, no trackers, no external
+fonts or libraries. Clone it, push it, enable Pages — done.
+
+---
+
+## What's inside
+
+| Section | Route | What it does |
+|---|---|---|
+| **Home** | `#/home` | Hero, featured + trending games, recently verified entries, recommended sites, random-game button, global search |
+| **Web Games** | `#/games` | 65 verified games with thumbnails, badges, filters (genre, multiplayer, mobile, no-registration, open source, indie, …), sorting and text search |
+| **Game Sites** | `#/sites` | 21 legitimate platforms, developer sites and archives with policies, counts (marked as estimates), account requirements |
+| **Search Engines** | `#/engines` | 12 legitimate search engines with privacy notes and game-discovery tips |
+| **Network Check** | `#/network` | Passive browser-side connectivity diagnostic with honest 3-state results |
+| **Search** | `#/search` | Unified instant search across games, sites and engines |
+| **Favorites** | `#/favorites` | Locally stored favorites (localStorage only — no account) |
+
+Extras: deep links (`#/game/2048`, `#/site/poki`), keyboard shortcuts
+(`/` search · `R` random game · `Esc` close), toasts, modals with focus trap,
+skeleton loading states, service-worker offline caching and reduced-motion support.
+
+## Project structure
+
+```
+index.html                  App shell (all views; hash-routed SPA)
+404.html                    Styled not-found page
+sw.js                       Service worker (offline cache)
+assets/
+  css/main.css              Complete design system (no framework)
+  js/app.js                 Application logic (vanilla ES modules)
+  js/netcheck.js            Network Check module
+  img/favicon.svg           Logo mark
+  thumbs/*.svg              Generated game artwork (procedural, ~4 KB each)
+  logos/*.svg               Generated platform / engine monograms
+data/
+  games.json                Verified game catalogue (65 entries)
+  game-sites.json           Verified platform directory (21 entries)
+  search-engines.json       Verified search engines (12 entries)
+  network-tests.json        Network Check target list + controls
+scripts/
+  generate-thumbs.mjs       Regenerates all SVG artwork from the data files
+  dom-qa.mjs                DOM / layout / a11y QA suite (dev tool)
+  visual-test.mjs           Screenshot smoke test (dev tool)
+docs/
+  RESEARCH.md               Research methodology + verification log
+.github/workflows/deploy.yml  Pages deployment via GitHub Actions
+```
+
+## Deploying to GitHub Pages
+
+### Option A — deploy from a branch (simplest)
+
+1. Push this repository to GitHub.
+2. In the repo, open **Settings → Pages**.
+3. Under *Build and deployment*, choose **Deploy from a branch**.
+4. Select **main** / **(root)** and save.
+5. Done — the site serves at `https://<user>.github.io/<repo>/`.
+
+Everything uses **relative paths** (`assets/…`, `data/…`), so it works at
+any sub-path without configuration. `.nojekyll` is included so GitHub Pages
+serves the files verbatim.
+
+### Option B — deploy via GitHub Actions (included)
+
+The included workflow (`.github/workflows/deploy.yml`) deploys on every push
+to `main` using the official Pages actions:
+
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Push to `main`.
+
+## Updating the data
+
+The portal is data-driven — to add or edit entries, change the JSON files in
+`data/` and (for new games/sites/engines) regenerate the artwork:
 
 ```bash
-git clone <this repo>
-npm install
-npm run dev
-# open http://localhost:3000
+node scripts/generate-thumbs.mjs
 ```
 
-Optional API keys (GitHub token, HIBP, VirusTotal, …) exist only as documented,
-never-required Tier-2 integrations. Paid services are documented but never part of a scan.
+Every entry supports the common schema:
 
-## Why it works without keys
-
-The app combines many small **free + keyless + officially supported** sources instead of
-depending on one large API, and prefers **local analysis** so it stays useful and resilient:
-
-```
-Username → public registries/APIs → profile URLs → avatars → perceptual hashing → correlation
-Email    → normalize (local) → domain/MX (local DNS) → Gravatar (MD5) → Keybase proofs
-Domain   → local DNS → RDAP → WHOIS fallback → crt.sh CT logs → Wayback → email-security
-IP       → local PTR → RDAP (RIR) → WHOIS → keyless geo/ASN
-Image    → 100% local: aHash/dHash perceptual hashing + EXIF/XMP/ICC/GPS extraction
-```
-
-Every source is verified against its official documentation/repository and recorded in
-[`docs/RESEARCH.md`](docs/RESEARCH.md). There are **no fake "API" integrations**: anything that
-needs a key is labelled `KEY REQUIRED`, anything paid is `PAID`, dead/prohibited sources are
-`UNAVAILABLE`, and we never scrape against terms, hard-code keys, or present mock data as live.
-
-## Capabilities
-
-### Username engine
-- **Rich keyless APIs:** GitHub (+public events), GitLab, Keybase, Hacker News, crates.io,
-  RubyGems, PyPI, Docker Hub, dev.to, Stack Exchange, Bluesky, Mastodon/WebFinger (15 instances),
-  Chess.com, Lichess.
-- **~35 curated public-profile checks** with false-positive-aware detection (status code **plus**
-  page-content markers; hits are labelled "confirmed" vs "likely").
-- **Correlation engine:** avatars from found profiles are downloaded, perceptual-hashed locally
-  and compared across sites; display-name similarity, shared links, and Keybase's cryptographic
-  proofs link accounts together.
-
-### Domain engine
-- Local DNS (A/AAAA/MX/TXT/NS/CNAME/SOA/CAA) via the OS resolver, with **DoH fallback** (Google/
-  Cloudflare/Quad9) when port 53 is intercepted.
-- **RDAP** structured registration data (IANA bootstrap + built-in fallback table).
-- **WHOIS** over TCP/43 with IANA/referral following (RFC 3912).
-- **Subdomain enumeration** via crt.sh Certificate Transparency + HackerTarget.
-- Email-security posture: **SPF / DMARC / MX provider** detection; **Wayback** snapshots.
-
-### Email engine
-- Local normalization (Gmail dot/plus canonicalization, provider detection), disposable-domain flags.
-- Mail-provider inference from MX records (local DNS).
-- **Gravatar by MD5 hash** (the raw address is never sent), **Keybase by email** (signed proofs).
-
-### IP engine
-- Reverse DNS (PTR, local), RDAP (RIR), WHOIS fallback, keyless geo/ASN (ipwho.is).
-
-### Image lab (`/image`)
-- 100% local: aHash/dHash perceptual fingerprints + EXIF/XMP/ICC/GPS metadata with map links.
-  Files are decoded in-process and never sent to a third party.
-
-## Integration registry
-
-All sources live in one place — [`lib/registry.ts`](lib/registry.ts) — which the scan engine,
-the **Sources** matrix page, and the **Health** probe all read from. Adding a source is a registry
-entry + a check function; the scan engine doesn't change. Each entry carries:
-
-```
-name · category · keyRequired · accountRequired · paid · tier · status
-officialDocumentation · repository · rateLimit · automation policy
-input · output · implementation · limitations · defaultEnabled · lastVerified
+```json
+{
+  "name": "…",
+  "url": "…",
+  "description": "…",
+  "category": "game | site | engine",
+  "tags": ["…"],
+  "source": "how this was verified",
+  "verified": true,
+  "lastVerified": "2026-09-05"
+}
 ```
 
-Status shown in the UI: **✓ Keyless source · ○ Optional API key · ○ Account required · ○ Paid · ✕ Unavailable**.
+Type-specific fields (genre, players, account, pricing, multiplayer, counts…)
+are documented in each file. Please keep the `lastVerified` date honest —
+re-check the official page before updating entries.
 
-## Live verification
+## The Network Check (and what it will never do)
 
-`GET /api/health` (and the **Health** page) probes every default keyless endpoint from the
-running server with a harmless request, exercising timeouts, network failures, rate limits and
-unexpected responses. Sources that are unreachable from a deployment are reported rather than
-faked, and every check degrades gracefully and independently.
+The Network Check answers one question: *“Can my browser reach these gaming
+sites right now?”* — from the visitor's own network, using ordinary requests:
 
-## API
+1. A **no-cors GET fetch** (opaque; success proves the request completed),
+2. a **favicon image probe**, and
+3. one **repeat fetch** — a target is only reported red if it *consistently* fails.
 
-| Endpoint | Method | Body | Purpose |
-|---|---|---|---|
-| `/api/investigate` | POST | `{ type: 'auto'\|'username'\|'domain'\|'email'\|'ip', target }` | Run a full engine scan |
-| `/api/image` | POST | multipart `file` | Local pHash + EXIF analysis |
-| `/api/sources` | GET | – | The integration registry |
-| `/api/health` | GET | – | Live source verification |
+Results are strictly three-state, and never overclaim:
 
-## Tests
+- 🟢 **Reachable** — a request completed (timing shown when measurable).
+- 🔴 **Likely blocked / unreachable** — requests failed consistently *and* the
+  local control test passed.
+- ⚪ **Unable to determine** — the browser is offline, the local control failed,
+  or something (CORS, an extension) prevented a conclusive test.
 
-```bash
-npm test     # local unit tests: normalization, target detection, perceptual hashing
-npm run build
-```
+It never claims a site is *definitely* blocked just because JavaScript could
+not read its response. It performs **no** port scanning, proxying, tunnelling,
+DNS manipulation, or block circumvention of any kind — it is a passive
+diagnostic, by design. Targets and control cases live in `data/network-tests.json`.
 
-## Legal & ethical use
+## Quality control performed
 
-This tool queries **public** data via documented interfaces with polite pacing, and never bypasses
-authentication, CAPTCHAs, or rate limits. Use it only on targets you're authorized to investigate
-and in accordance with applicable law and each source's terms. Sources are documented with their
-automation policy in [`docs/RESEARCH.md`](docs/RESEARCH.md).
+- ✅ Every URL opened and checked against its **official** domain (Sep 5, 2026)
+- ✅ Dead, hijacked and unofficial mirror domains excluded (see `docs/RESEARCH.md`)
+- ✅ Free / freemium / account status recorded per entry; estimates marked as such
+- ✅ 58-check automated DOM/layout/a11y suite (`scripts/dom-qa.mjs`) — all passing
+- ✅ Desktop (1440 px), tablet (768 px) and mobile (390 px) layouts — zero horizontal overflow
+- ✅ `prefers-reduced-motion` disables all animation
+- ✅ WCAG AA contrast verified for text/background pairs (≥ 4.5:1)
+- ✅ Error states (broken/offline data → friendly retry), offline mode via service worker
+- ✅ Network Check verified against reachable (green), unreachable (red, `.invalid`
+  RFC-2606 control) and offline (grey) cases
 
-## Tech
+## Performance notes
 
-Next.js 14 (App Router, route handlers) · TypeScript · local-only imaging (`jpeg-js`, `pngjs`, `exifr`)
-· no database, no background services, no required secrets.
+- No frameworks, no webfonts — system font stack, single CSS file, two ES modules.
+- ~110 KB critical path (HTML + CSS + JS), thumbnails are ~4 KB procedural SVGs
+  lazy-loaded with explicit dimensions (no layout shift).
+- Search inputs debounced; card grids rendered via single `innerHTML` passes.
+- Service worker: cache-first for the shell, stale-while-revalidate for data —
+  repeat visits work fully offline.
+- All animations are transform/opacity only and disabled under reduced motion.
+
+## License & attribution
+
+- Site code and generated artwork: released for any use (MIT-style; attribute if you like).
+- All games, platforms and trademarks belong to their respective owners —
+  PLAYGRID only links to **official** pages and hosts no third-party game files.
+- Verified data reflects the state of each site on **September 5, 2026**.
+  Availability changes; always check the linked official page.

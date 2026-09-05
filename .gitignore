@@ -1,12 +1,3 @@
-node_modules/
-.next/
-out/
-dist/
-build/
 .DS_Store
+Thumbs.db
 *.log
-.env*.local
-.vercel
-next-env.d.ts
-coverage/
-.nyc_output/

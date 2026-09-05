@@ -1,0 +1,49 @@
+{
+  "category": "network-tests",
+  "description": "Configuration for the Network Check feature. This is a strictly passive, browser-side connectivity diagnostic: it performs ordinary GET requests (no-cors fetch) and favicon image probes with timeouts, and never attempts to bypass any block, filter or authentication. Targets are the platforms and games listed in this portal, plus control targets used to calibrate the result states.",
+  "safety": {
+    "methods": ["GET fetch (mode: no-cors, cache-busting)", "Favicon image probe", "Timeout via AbortController"],
+    "never": ["No port scanning", "No proxies or tunnels", "No DNS manipulation", "No block circumvention", "No traffic hiding", "Only ordinary browser requests to the listed gaming domains"]
+  },
+  "controls": {
+    "positiveControlUrl": "https://example.com/",
+    "positiveControlNote": "IANA-reserved domain that should always be reachable; used to calibrate the test.",
+    "negativeControlUrl": "https://network-check-demo.invalid/",
+    "negativeControlNote": "The .invalid TLD is reserved by RFC 2606 and can never resolve; it demonstrates what an unreachable target looks like.",
+    "selfControl": "This portal's own origin is also tested as a sanity check."
+  },
+  "tests": [
+    { "id": "poki", "name": "Poki", "url": "https://poki.com/", "group": "platforms" },
+    { "id": "itch-io", "name": "itch.io", "url": "https://itch.io/", "group": "platforms" },
+    { "id": "crazygames", "name": "CrazyGames", "url": "https://www.crazygames.com/", "group": "platforms" },
+    { "id": "game-jolt", "name": "Game Jolt", "url": "https://gamejolt.com/", "group": "platforms" },
+    { "id": "y8", "name": "Y8", "url": "https://www.y8.com/", "group": "platforms" },
+    { "id": "newgrounds", "name": "Newgrounds", "url": "https://www.newgrounds.com/", "group": "platforms" },
+    { "id": "kongregate", "name": "Kongregate", "url": "https://www.kongregate.com/", "group": "platforms" },
+    { "id": "armor-games", "name": "Armor Games", "url": "https://armorgames.com/", "group": "platforms" },
+    { "id": "addicting-games", "name": "Addicting Games", "url": "https://www.addictinggames.com/", "group": "platforms" },
+    { "id": "coolmath-games", "name": "Coolmath Games", "url": "https://www.coolmathgames.com/", "group": "platforms" },
+    { "id": "board-game-arena", "name": "Board Game Arena", "url": "https://boardgamearena.com/", "group": "platforms" },
+    { "id": "cardgames-io", "name": "CardGames.io", "url": "https://cardgames.io/", "group": "platforms" },
+    { "id": "nitrome", "name": "Nitrome", "url": "https://www.nitrome.com/", "group": "platforms" },
+    { "id": "neal-fun", "name": "neal.fun", "url": "https://neal.fun/", "group": "platforms" },
+    { "id": "archive-org", "name": "Internet Archive", "url": "https://archive.org/", "group": "platforms" },
+    { "id": "frvr", "name": "FRVR", "url": "https://frvr.com/", "group": "platforms" },
+    { "id": "nyt-games", "name": "NYT Games", "url": "https://www.nytimes.com/games", "group": "platforms" },
+    { "id": "pbs-kids", "name": "PBS Kids", "url": "https://pbskids.org/", "group": "platforms" },
+    { "id": "lichess", "name": "Lichess", "url": "https://lichess.org/", "group": "games" },
+    { "id": "chess-com", "name": "Chess.com", "url": "https://www.chess.com/", "group": "games" },
+    { "id": "tetr-io", "name": "TETR.IO", "url": "https://tetr.io/", "group": "games" },
+    { "id": "slither-io", "name": "Slither.io", "url": "https://slither.io/", "group": "games" },
+    { "id": "krunker", "name": "Krunker", "url": "https://krunker.io/", "group": "games" },
+    { "id": "territorial-io", "name": "Territorial.io", "url": "https://territorial.io/", "group": "games" },
+    { "id": "skribbl-io", "name": "Skribbl.io", "url": "https://skribbl.io/", "group": "games" },
+    { "id": "minecraft-classic", "name": "Minecraft Classic", "url": "https://classic.minecraft.net/", "group": "games" },
+    { "id": "geoguessr", "name": "GeoGuessr", "url": "https://www.geoguessr.com/", "group": "games" },
+    { "id": "slow-roads", "name": "Slow Roads", "url": "https://slowroads.io/", "group": "games" },
+    { "id": "openfront", "name": "OpenFront", "url": "https://openfront.io/", "group": "games" },
+    { "id": "smash-karts", "name": "Smash Karts", "url": "https://smashkarts.io/", "group": "games" },
+    { "id": "example-control", "name": "Control: example.com", "url": "https://example.com/", "group": "controls", "note": "Positive control — IANA-reserved domain, should be reachable." },
+    { "id": "invalid-control", "name": "Control: invalid domain", "url": "https://network-check-demo.invalid/", "group": "controls", "note": "Negative control — .invalid can never resolve (RFC 2606). Expected to be unreachable." }
+  ]
+}
