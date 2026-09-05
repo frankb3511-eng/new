@@ -3,7 +3,7 @@
  * Static-asset cache-first, data JSONs stale-while-revalidate.
  * Keeps the portal usable offline after first visit.
  */
-const VERSION = 'playgrid-v1';
+const VERSION = 'playgrid-v2';
 const STATIC_CACHE = `${VERSION}-static`;
 const DATA_CACHE = `${VERSION}-data`;
 
@@ -12,10 +12,15 @@ const BASE = new URL('./', self.location).pathname; // e.g. "/" or "/repo/"
 const PRECACHE = [
   './',
   './index.html',
+  './404.html',
   './assets/css/main.css',
   './assets/js/app.js',
   './assets/js/netcheck.js',
   './assets/img/favicon.svg',
+  './assets/fonts/space-grotesk-latin-wght-normal.woff2',
+  './assets/fonts/source-sans-3-latin-wght-normal.woff2',
+  './assets/fonts/ibm-plex-mono-latin-400-normal.woff2',
+  './assets/fonts/ibm-plex-mono-latin-500-normal.woff2',
 ];
 
 const PRECACHE_DATA = [

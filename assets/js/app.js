@@ -126,6 +126,8 @@ function updateFavUI() {
   const badge = $('#favCount');
   badge.textContent = n;
   badge.dataset.zero = String(n === 0);
+  const heroStat = $('#heroStats [data-stat="favorites"]');
+  if (heroStat && state.loaded) heroStat.textContent = n;
 }
 
 /* ========================================================================
@@ -172,10 +174,9 @@ async function loadData() {
     initNetworkView({ tests: state.netTests, toast: showToast });
     renderAll();
   } catch {
-    $$('.card-grid, .site-grid, .card-scroller, .engine-list').forEach((el) => {
+    $$('.card-grid, .directory-list, .chart-list, .verify-table').forEach((el) => {
       el.innerHTML = `
         <div class="empty-state" style="grid-column:1/-1">
-          ${icon('info')}
           <h2>Couldn't load the database</h2>
           <p>Check your connection and try again.</p>
           <button class="btn btn-primary" type="button" data-retry-load>Retry</button>
@@ -193,22 +194,17 @@ async function loadData() {
  * ====================================================================== */
 function gameCard(g, opts = {}) {
   const fav = isFav('games', g.id);
-  const playerBadge = g.players === 'multiplayer'
-    ? '<span class="badge badge-mp">' + icon('users') + 'Multiplayer</span>'
-    : g.players === 'both'
-      ? '<span class="badge badge-mp">' + icon('users') + 'MP + SP</span>'
-      : '<span class="badge badge-sp">' + icon('user') + 'Single-player</span>';
+  const playerBadge = g.players === 'multiplayer' ? 'Multiplayer'
+    : g.players === 'both' ? 'MP + SP' : 'Single-player';
   const name = opts.q ? highlight(g.name, opts.q) : esc(g.name);
   return `
-  <article class="game-card ${opts.trending ? 'trending' : ''}" data-game="${g.id}">
+  <article class="game-card" data-game="${g.id}">
     <div class="gc-media" data-open="game:${g.id}" role="button" tabindex="0" aria-label="View details for ${esc(g.name)}">
       <img src="assets/thumbs/${g.id}.svg" alt="" width="800" height="500" loading="lazy" decoding="async">
-      ${opts.rank ? `<span class="rank-chip" aria-hidden="true">${opts.rank}</span>` : ''}
       <div class="gc-badges">
-        ${playerBadge}
-        <span class="badge badge-free">${icon('zap')}Free</span>
-        <span class="badge badge-browser">${icon('globe')}Browser</span>
-        ${g.mobile ? `<span class="badge badge-mobile">${icon('smartphone')}Mobile</span>` : ''}
+        <span class="badge">${playerBadge}</span>
+        ${g.mobile ? '<span class="badge">Mobile</span>' : ''}
+        ${g.openSource ? '<span class="badge">Open source</span>' : ''}
       </div>
     </div>
     <button class="fav-toggle" type="button" data-fav="games:${g.id}" data-on="${fav}" aria-label="${fav ? 'Remove' : 'Save'} ${esc(g.name)} ${fav ? 'from' : 'to'} favorites" title="${fav ? 'Remove from favorites' : 'Save to favorites'}">
@@ -220,7 +216,7 @@ function gameCard(g, opts = {}) {
         <span class="gc-genre">${esc(g.genre)}</span>
       </div>
       <p class="gc-desc">${esc(g.description)}</p>
-      <p class="gc-dev">${icon('tag')}${esc(g.developer)}</p>
+      <p class="gc-dev">${esc(g.developer)}</p>
       <div class="gc-actions">
         <a class="btn-play" href="${esc(g.url)}" target="_blank" rel="noopener noreferrer">${icon('play')}Play</a>
         <a class="btn-src" href="${esc(g.sourceUrl || g.url)}" target="_blank" rel="noopener noreferrer" title="Official source" aria-label="Official source for ${esc(g.name)}">${icon('external')}</a>
@@ -229,29 +225,25 @@ function gameCard(g, opts = {}) {
   </article>`;
 }
 
-function siteCard(s, opts = {}) {
+/* Directory row (shared by sites, engines, favorites and search results) */
+function siteRow(s, opts = {}) {
   const fav = isFav('sites', s.id);
   const name = opts.q ? highlight(s.name, opts.q) : esc(s.name);
-  const count = s.gameCount
-    ? `<span class="badge badge-approx" title="${esc(s.gameCountNote || '')}">~${esc(s.gameCount)} games</span>`
-    : '';
+  const count = s.gameCount ? ` · ~${esc(s.gameCount)} games` : '';
   return `
-  <article class="site-card" data-site="${s.id}">
-    <div class="site-card-top">
-      <img src="assets/logos/site-${s.id}.svg" alt="" width="48" height="48" loading="lazy" decoding="async">
-      <div>
-        <h3 class="site-name"><a href="#/site/${s.id}" data-open-link="site:${s.id}">${name}</a></h3>
-        <p class="site-type">${esc(s.type)}${count ? ' · ' : ''}${count}</p>
+  <article class="directory-row" data-site="${s.id}">
+    <img class="dr-logo" src="assets/logos/site-${s.id}.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+    <div class="dr-main">
+      <h3 class="dr-name"><a href="#/site/${s.id}" data-open-link="site:${s.id}">${name}</a><span class="dr-type">${esc(s.type)}${count}</span></h3>
+      <p class="dr-desc">${esc(s.description)}</p>
+      <div class="dr-meta">
+        <span class="badge">${s.account === 'required' ? 'Account needed' : s.account === 'optional' ? 'Account optional' : 'No account'}</span>
+        ${s.multiplayer ? '<span class="badge">Multiplayer</span>' : '<span class="badge">Single-player</span>'}
+        ${s.mobile ? '<span class="badge">Mobile</span>' : ''}
       </div>
     </div>
-    <p class="site-desc">${esc(s.description)}</p>
-    <div class="site-meta">
-      ${s.multiplayer ? '<span class="badge badge-mp">' + icon('users') + 'Multiplayer</span>' : '<span class="badge badge-sp">' + icon('user') + 'Mostly single-player</span>'}
-      ${s.mobile ? '<span class="badge badge-mobile">' + icon('smartphone') + 'Mobile</span>' : ''}
-      <span class="badge ${s.account === 'required' ? 'badge-freemium' : 'badge-free'}">${icon(s.account === 'required' ? 'users' : 'zap')}${s.account === 'required' ? 'Account needed' : s.account === 'optional' ? 'Account optional' : 'No account'}</span>
-    </div>
-    <div class="site-card-actions">
-      <a class="btn btn-ghost" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">Visit ${icon('external')}</a>
+    <div class="dr-side">
+      <a class="dr-visit" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">Visit ${icon('arrow-up-right')}</a>
       <button class="fav-toggle-inline" type="button" data-fav="sites:${s.id}" data-on="${fav}" aria-label="${fav ? 'Remove' : 'Save'} ${esc(s.name)} ${fav ? 'from' : 'to'} favorites" title="${fav ? 'Remove from favorites' : 'Save to favorites'}">
         ${icon('heart')}
       </button>
@@ -259,25 +251,20 @@ function siteCard(s, opts = {}) {
   </article>`;
 }
 
-function engineCard(e, opts = {}) {
+function engineRow(e, opts = {}) {
   const fav = isFav('engines', e.id);
   const name = opts.q ? highlight(e.name, opts.q) : esc(e.name);
-  const pricingBadge = /free/i.test(e.pricing) && !/premium|paid|subscription/i.test(e.pricing)
-    ? '<span class="badge badge-free">Free</span>'
-    : '<span class="badge badge-freemium">Freemium / paid</span>';
+  const free = /free/i.test(e.pricing) && !/premium|paid|subscription/i.test(e.pricing);
   return `
-  <article class="engine-card" data-engine="${e.id}">
-    <img src="assets/logos/engine-${e.id}.svg" alt="" width="56" height="56" loading="lazy" decoding="async">
-    <div>
-      <h3 class="engine-name"><a href="#/engine/${e.id}" data-open-link="engine:${e.id}">${name}</a> ${pricingBadge}</h3>
-      <p class="engine-sub">${esc(e.type)} · ${esc(e.privacy)}</p>
-      <div class="engine-tags">
-        ${e.tags.slice(0, 4).map((t) => `<span class="badge badge-approx">#${esc(t)}</span>`).join('')}
-      </div>
-      <p class="engine-tip">${icon('search')}<span>Tip: <code>${esc(e.searchTip)}</code></span></p>
+  <article class="directory-row" data-engine="${e.id}">
+    <img class="dr-logo" src="assets/logos/engine-${e.id}.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+    <div class="dr-main">
+      <h3 class="dr-name"><a href="#/engine/${e.id}" data-open-link="engine:${e.id}">${name}</a><span class="dr-type">${esc(e.type)} · ${free ? 'Free' : 'Freemium / paid'}</span></h3>
+      <p class="dr-desc">${esc(e.description)}</p>
+      <p class="dr-tip">Try: <code>${esc(e.searchTip)}</code></p>
     </div>
-    <div class="engine-actions">
-      <a class="btn btn-ghost" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">Search ${icon('external')}</a>
+    <div class="dr-side">
+      <a class="dr-visit" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">Search ${icon('arrow-up-right')}</a>
       <button class="fav-toggle-inline" type="button" data-fav="engines:${e.id}" data-on="${fav}" aria-label="${fav ? 'Remove' : 'Save'} ${esc(e.name)} ${fav ? 'from' : 'to'} favorites" title="${fav ? 'Remove from favorites' : 'Save to favorites'}">
         ${icon('heart')}
       </button>
@@ -291,38 +278,81 @@ function engineCard(e, opts = {}) {
 function renderHome() {
   if (!state.loaded) return;
 
+  const statValues = {
+    games: state.games.length,
+    sites: state.sites.length,
+    engines: state.engines.length,
+    targets: state.netTests.length,
+    favorites: favCount(),
+  };
   $$('#heroStats [data-stat]').forEach((el) => {
     const key = el.dataset.stat;
-    el.textContent = key === 'games' ? state.games.length
-      : key === 'sites' ? state.sites.length
-      : key === 'engines' ? state.engines.length : '0';
+    if (key in statValues) el.textContent = statValues[key];
   });
 
+  /* 01 — Featured: first featured game as spotlight, the rest as a compact list */
   const featured = state.games.filter((g) => g.featured);
-  $('#featuredRow').innerHTML = featured.map((g) => gameCard(g)).join('');
+  if (featured.length) {
+    const [lead, ...rest] = featured;
+    const fav = isFav('games', lead.id);
+    const spotlight = `
+    <article class="spotlight" data-game="${lead.id}">
+      <div class="spotlight-media" data-open="game:${lead.id}" role="button" tabindex="0" aria-label="View details for ${esc(lead.name)}">
+        <img src="assets/thumbs/${lead.id}.svg" alt="" width="800" height="500" loading="lazy" decoding="async">
+      </div>
+      <div class="spotlight-body">
+        <p class="spotlight-genre">${esc(lead.genre)} · ${lead.players === 'multiplayer' ? 'Multiplayer' : lead.players === 'both' ? 'Multiplayer + single-player' : 'Single-player'}</p>
+        <h3 class="spotlight-title"><a href="#/game/${lead.id}" data-open-link="game:${lead.id}">${esc(lead.name)}</a></h3>
+        <p class="spotlight-desc">${esc(lead.description)}</p>
+        <p class="spotlight-dev">${esc(lead.developer)}</p>
+        <div class="spotlight-actions">
+          <a class="btn btn-primary" href="${esc(lead.url)}" target="_blank" rel="noopener noreferrer">${icon('play')}Play</a>
+          <button class="fav-toggle-inline" type="button" data-fav="games:${lead.id}" data-on="${fav}" aria-label="${fav ? 'Remove' : 'Save'} ${esc(lead.name)} ${fav ? 'from' : 'to'} favorites" title="${fav ? 'Remove from favorites' : 'Save to favorites'}">${icon('heart')}</button>
+        </div>
+      </div>
+    </article>`;
+    const list = rest.slice(0, 5).map((g) => `
+      <button class="featured-list-item" type="button" data-open="game:${g.id}">
+        <img src="assets/thumbs/${g.id}.svg" alt="" width="64" height="44" loading="lazy" decoding="async">
+        <span>
+          <span class="fli-name">${esc(g.name)}</span>
+          <span class="fli-meta">${esc(g.genre)} · ${esc(g.developer)}</span>
+        </span>
+        <span class="fli-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-up-right"/></svg></span>
+      </button>`).join('');
+    $('#featuredRow').innerHTML = spotlight + `<div class="featured-list">${list}</div>`;
+  }
 
+  /* 02 — Trending: numbered chart rows */
   const trending = state.games.filter((g) => g.trending)
     .concat(state.games.filter((g) => !g.trending && g.popularity === 3))
     .slice(0, 8);
-  $('#trendingGrid').innerHTML = trending.map((g, i) => gameCard(g, { rank: i + 1, trending: true })).join('');
-
-  const recent = [...state.games].sort((a, b) => (b.lastVerified || '').localeCompare(a.lastVerified || '') || b.popularity - a.popularity).slice(0, 6);
-  $('#recentVerified').innerHTML = recent.map((g) => `
-    <li>
-      <img src="assets/thumbs/${g.id}.svg" alt="" width="52" height="39" loading="lazy" decoding="async">
-      <div>
-        <p class="vl-name"><a href="#/game/${g.id}" data-open-link="game:${g.id}">${esc(g.name)}</a></p>
-        <p class="vl-meta">${esc(g.genre)} · ${esc(g.developer)}</p>
-      </div>
-      <span class="vl-status">${icon('check')}Verified ${fmtDate(g.lastVerified)}</span>
+  $('#trendingGrid').innerHTML = trending.map((g, i) => `
+    <li class="chart-row">
+      <span class="chart-rank" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+      <span class="chart-name"><a href="#/game/${g.id}" data-open-link="game:${g.id}">${esc(g.name)}</a></span>
+      <span class="chart-meta">${esc(g.genre)} · ${esc(g.developer)}</span>
+      <a class="chart-play" href="${esc(g.url)}" target="_blank" rel="noopener noreferrer">${icon('play')}Play</a>
     </li>`).join('');
 
+  /* 03 — Recently verified: hairline table */
+  const recent = [...state.games].sort((a, b) => (b.lastVerified || '').localeCompare(a.lastVerified || '') || b.popularity - a.popularity).slice(0, 6);
+  $('#recentVerified').innerHTML = `
+    <div class="verify-row verify-head-row" aria-hidden="true">
+      <span>Game</span><span>Genre</span><span>Developer</span><span>Verified</span>
+    </div>` + recent.map((g) => `
+    <div class="verify-row">
+      <span class="vr-name"><a href="#/game/${g.id}" data-open-link="game:${g.id}">${esc(g.name)}</a></span>
+      <span class="vr-genre">${esc(g.genre)}</span>
+      <span class="vr-dev">${esc(g.developer)}</span>
+      <span class="vr-date">${icon('check')}Verified ${fmtDate(g.lastVerified)}</span>
+    </div>`).join('');
+
+  /* 04 — Platforms: directory rows */
   const recommended = ['poki', 'itch-io', 'crazygames', 'board-game-arena', 'newgrounds', 'nitrome']
     .map((id) => state.sites.find((s) => s.id === id))
     .filter(Boolean);
-  $('#homeSites').innerHTML = recommended.map((s) => siteCard(s)).join('');
-
-  observeReveals();
+  $('#homeSites').innerHTML = recommended.map((s) => siteRow(s)).join('');
 }
 
 /* ========================================================================
@@ -338,9 +368,7 @@ function renderGenreChips() {
 
 function renderFilterChips() {
   $('#filterChips').innerHTML = FILTER_DEFS.map((f) => `
-    <button class="chip" type="button" data-flag="${f.id}" aria-pressed="${state.gamesFilter.flags.has(f.id)}">
-      ${icon(f.icon)}${f.label}
-    </button>`).join('');
+    <button class="chip" type="button" data-flag="${f.id}" aria-pressed="${state.gamesFilter.flags.has(f.id)}">${f.label}</button>`).join('');
 }
 
 function filteredGames() {
@@ -373,7 +401,6 @@ function renderGames() {
   $('#gamesGrid').innerHTML = list.map((g) => gameCard(g)).join('');
   $('#gamesEmpty').hidden = list.length > 0;
   $('#gamesCountLabel').textContent = `${list.length} of ${state.games.length} games shown.`;
-  observeReveals();
 }
 
 function applyGamesFilterParam(param) {
@@ -404,9 +431,8 @@ function renderSites() {
     }
     return true;
   });
-  $('#sitesGrid').innerHTML = list.map((s) => siteCard(s)).join('');
+  $('#sitesGrid').innerHTML = list.map((s) => siteRow(s)).join('');
   $('#sitesEmpty').hidden = list.length > 0;
-  observeReveals();
 }
 
 /* ========================================================================
@@ -414,8 +440,7 @@ function renderSites() {
  * ====================================================================== */
 function renderEngines() {
   if (!state.loaded) return;
-  $('#enginesList').innerHTML = state.engines.map((e) => engineCard(e)).join('');
-  observeReveals();
+  $('#enginesList').innerHTML = state.engines.map((e) => engineRow(e)).join('');
 }
 
 /* ========================================================================
@@ -476,18 +501,17 @@ function renderSearchPage() {
     : `No results for “<strong>${esc(q)}</strong>”`;
 
   const parts = [];
-  if (sites.length) parts.push(`<p class="netgroup-label">Game sites</p>` + sites.map((s) => siteCard(s, { q })).join(''));
-  if (engines.length) parts.push(`<p class="netgroup-label">Search engines</p>` + engines.map((e) => engineCard(e, { q })).join(''));
-  if (games.length) parts.push(games.map((g) => gameCard(g, { q })).join(''));
+  if (sites.length) parts.push(`<p class="netgroup-label">Game sites</p><div class="directory-list">` + sites.map((s) => siteRow(s, { q })).join('') + `</div>`);
+  if (engines.length) parts.push(`<p class="netgroup-label">Search engines</p><div class="directory-list directory-list-single">` + engines.map((e) => engineRow(e, { q })).join('') + `</div>`);
+  if (games.length) parts.push(`<p class="netgroup-label">Games</p><div class="card-grid card-grid-games">` + games.map((g) => gameCard(g, { q })).join('') + `</div>`);
   $('#searchPageResults').innerHTML = parts.join('');
 
   const empty = total === 0;
   $('#searchPageEmpty').hidden = !empty;
   if (empty) {
-    const suggestions = [...state.games].sort((a, b) => b.popularity - a.popularity).slice(0, 4).map((g) => `<a href="#/game/${g.id}">${esc(g.name)}</a>`).join(', ');
+    const suggestions = [...state.games].sort((a, b) => b.popularity - a.popularity).slice(0, 4).map((g) => `<a href="#/game/${g.id}" data-open-link="game:${g.id}">${esc(g.name)}</a>`).join(', ');
     $('#searchEmptyHelp').innerHTML = `Nothing matched. Try fewer words, or check out ${suggestions}.`;
   }
-  observeReveals();
 }
 
 /* ========================================================================
@@ -510,15 +534,14 @@ function renderFavorites() {
 
   $('#favGames').innerHTML = gameList.map((g) => gameCard(g)).join('');
   $('#favGames').hidden = state.favTab !== 'games';
-  $('#favSites').innerHTML = siteList.map((s) => siteCard(s)).join('');
+  $('#favSites').innerHTML = siteList.map((s) => siteRow(s)).join('');
   $('#favSites').hidden = state.favTab !== 'sites';
-  $('#favEngines').innerHTML = engineList.map((e) => engineCard(e)).join('');
+  $('#favEngines').innerHTML = engineList.map((e) => engineRow(e)).join('');
   $('#favEngines').hidden = state.favTab !== 'engines';
 
   const total = gameList.length + siteList.length + engineList.length;
   $('#favEmpty').hidden = total > 0;
   $('#favFooter').hidden = total === 0;
-  observeReveals();
 }
 
 /* ========================================================================
@@ -558,14 +581,14 @@ function closeModal() {
   }
 }
 
-function metaItem(iconName, label, value) {
-  return `<div class="meta-item"><dt>${icon(iconName)}${esc(label)}</dt><dd>${value}</dd></div>`;
+function metaItem(label, value) {
+  return `<div class="meta-item"><dt>${esc(label)}</dt><dd>${value}</dd></div>`;
 }
 
 function modalTemplate(type, item, favType) {
   const fav = isFav(favType, item.id);
   const favBtn = `
-    <button class="btn btn-ghost" type="button" data-fav="${favType}:${item.id}" data-on="${fav}">
+    <button class="btn btn-secondary" type="button" data-fav="${favType}:${item.id}" data-on="${fav}">
       ${icon('heart')}${fav ? 'Remove favorite' : 'Save favorite'}
     </button>`;
   const verify = `
@@ -577,11 +600,11 @@ function modalTemplate(type, item, favType) {
     <div class="modal-media">
       <img src="assets/thumbs/${item.id}.svg" alt="" width="800" height="300" decoding="async">
       <div class="modal-badges">
-        <span class="badge badge-free">${icon('zap')}Free</span>
-        <span class="badge badge-browser">${icon('globe')}Browser</span>
-        ${item.mobile ? `<span class="badge badge-mobile">${icon('smartphone')}Mobile</span>` : `<span class="badge badge-sp">${icon('monitor')}Desktop</span>`}
-        ${item.openSource ? `<span class="badge badge-oss">${icon('code')}Open source</span>` : ''}
-        ${item.indie ? `<span class="badge badge-indie">${icon('star')}Indie</span>` : ''}
+        <span class="badge badge-solid">Free</span>
+        <span class="badge">Browser</span>
+        ${item.mobile ? `<span class="badge">Mobile</span>` : `<span class="badge">Desktop</span>`}
+        ${item.openSource ? `<span class="badge">Open source</span>` : ''}
+        ${item.indie ? `<span class="badge">Indie</span>` : ''}
       </div>
     </div>
     <div class="modal-content">
@@ -589,15 +612,15 @@ function modalTemplate(type, item, favType) {
       <h2 class="modal-title" id="modalTitle">${esc(item.name)}</h2>
       <p class="modal-desc">${esc(item.description)}</p>
       <p class="modal-details">${esc(item.details)}</p>
-      ${item.notes ? `<p class="modal-note">${icon('info')}<span>${esc(item.notes)}</span></p>` : ''}
-      <dl class="meta-grid">
-        ${metaItem('tag', 'Developer', esc(item.developer))}
-        ${metaItem('layers', 'Technology', item.tech.map(esc).join(' · '))}
-        ${metaItem(item.account === 'none' ? 'zap' : 'users', 'Account', item.account === 'none' ? 'Not needed' : item.account === 'optional' ? 'Optional' : 'Required')}
-        ${metaItem('shield', 'Price', esc(item.freeNote || (item.free ? 'Free' : 'See site')))}
-        ${item.sourceUrl && item.sourceUrl !== item.url ? metaItem('code', 'Source', `<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener noreferrer">Repository</a>`) : ''}
+      ${item.notes ? `<p class="modal-note"><span>${esc(item.notes)}</span></p>` : ''}
+      <dl class="meta-list">
+        ${metaItem('Developer', esc(item.developer))}
+        ${metaItem('Technology', item.tech.map(esc).join(' · '))}
+        ${metaItem('Account', item.account === 'none' ? 'Not needed' : item.account === 'optional' ? 'Optional' : 'Required')}
+        ${metaItem('Price', esc(item.freeNote || (item.free ? 'Free' : 'See site')))}
+        ${item.sourceUrl && item.sourceUrl !== item.url ? metaItem('Source', `<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener noreferrer">Repository</a>`) : ''}
       </dl>
-      <div class="modal-tags">${item.tags.map((t) => `<span class="badge badge-approx">#${esc(t)}</span>`).join('')}</div>
+      <div class="modal-tags">${item.tags.map((t) => `<span class="badge">#${esc(t)}</span>`).join('')}</div>
       <div class="modal-actions">
         <a class="btn btn-primary btn-lg" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${icon('play')}Play on official site</a>
         ${favBtn}
@@ -608,9 +631,9 @@ function modalTemplate(type, item, favType) {
 
   if (type === 'site') {
     return `
-    <div class="modal-content" style="padding-top:2rem">
-      <div class="site-card-top" style="margin-bottom:1rem">
-        <img src="assets/logos/site-${item.id}.svg" alt="" width="56" height="56">
+    <div class="modal-content">
+      <div class="modal-head">
+        <img src="assets/logos/site-${item.id}.svg" alt="" width="52" height="52" decoding="async">
         <div>
           <p class="modal-eyebrow">${esc(item.type)}</p>
           <h2 class="modal-title" id="modalTitle">${esc(item.name)}</h2>
@@ -618,16 +641,16 @@ function modalTemplate(type, item, favType) {
       </div>
       <p class="modal-desc">${esc(item.description)}</p>
       <p class="modal-details">${esc(item.details)}</p>
-      <dl class="meta-grid">
-        ${metaItem('users', 'Operator', esc(item.operator))}
-        ${metaItem('grid', 'Game count', item.gameCount ? `~${esc(item.gameCount)} <span style="font-weight:400;color:var(--muted)">(estimate)</span>` : esc(item.gameCountNote || 'Not published'))}
-        ${metaItem('users', 'Multiplayer', item.multiplayer ? 'Available' : 'Mostly single-player')}
-        ${metaItem(item.mobile ? 'smartphone' : 'monitor', 'Mobile', item.mobile ? (item.mobileNote ? esc(item.mobileNote) : 'Supported') : 'Desktop-focused')}
-        ${metaItem('shield', 'Account', item.account === 'required' ? 'Required' : item.account === 'optional' ? 'Optional' : 'Not needed')}
-        ${metaItem('zap', 'Pricing', esc(item.pricing))}
+      <dl class="meta-list">
+        ${metaItem('Operator', esc(item.operator))}
+        ${metaItem('Game count', item.gameCount ? `~${esc(item.gameCount)} (estimate)` : esc(item.gameCountNote || 'Not published'))}
+        ${metaItem('Multiplayer', item.multiplayer ? 'Available' : 'Mostly single-player')}
+        ${metaItem('Mobile', item.mobile ? (item.mobileNote ? esc(item.mobileNote) : 'Supported') : 'Desktop-focused')}
+        ${metaItem('Account', item.account === 'required' ? 'Required' : item.account === 'optional' ? 'Optional' : 'Not needed')}
+        ${metaItem('Pricing', esc(item.pricing))}
       </dl>
-      ${item.gameCountNote && item.gameCount ? `<p class="modal-note">${icon('info')}<span>Count is an estimate — ${esc(item.gameCountNote)}</span></p>` : ''}
-      <div class="modal-tags">${item.tags.map((t) => `<span class="badge badge-approx">#${esc(t)}</span>`).join('')}</div>
+      ${item.gameCountNote && item.gameCount ? `<p class="modal-note"><span>Count is an estimate — ${esc(item.gameCountNote)}</span></p>` : ''}
+      <div class="modal-tags">${item.tags.map((t) => `<span class="badge">#${esc(t)}</span>`).join('')}</div>
       <div class="modal-actions">
         <a class="btn btn-primary btn-lg" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Visit ${esc(item.name)} ${icon('external')}</a>
         ${favBtn}
@@ -637,24 +660,24 @@ function modalTemplate(type, item, favType) {
   }
 
   return `
-    <div class="modal-content" style="padding-top:2rem">
-      <div class="site-card-top" style="margin-bottom:1rem">
-        <img src="assets/logos/engine-${item.id}.svg" alt="" width="56" height="56">
+    <div class="modal-content">
+      <div class="modal-head">
+        <img src="assets/logos/engine-${item.id}.svg" alt="" width="52" height="52" decoding="async">
         <div>
           <p class="modal-eyebrow">${esc(item.type)}</p>
           <h2 class="modal-title" id="modalTitle">${esc(item.name)}</h2>
         </div>
       </div>
       <p class="modal-desc">${esc(item.description)}</p>
-      <dl class="meta-grid">
-        ${metaItem('search', 'Search type', esc(item.type))}
-        ${metaItem('shield', 'Privacy', esc(item.privacy))}
-        ${metaItem('zap', 'Pricing', esc(item.pricing))}
-        ${metaItem('users', 'Account', esc(item.account))}
+      <dl class="meta-list">
+        ${metaItem('Search type', esc(item.type))}
+        ${metaItem('Privacy', esc(item.privacy))}
+        ${metaItem('Pricing', esc(item.pricing))}
+        ${metaItem('Account', esc(item.account))}
       </dl>
-      <div class="modal-tags">${item.features.map((f) => `<span class="badge badge-approx">${esc(f)}</span>`).join('')}</div>
-      <p class="engine-tip" style="margin-top:1rem">${icon('search')}<span>Game-hunting tip: <code>${esc(item.searchTip)}</code></span></p>
-      <div class="modal-actions" style="margin-top:1.2rem">
+      <div class="modal-tags">${item.features.map((f) => `<span class="badge">${esc(f)}</span>`).join('')}</div>
+      <p class="dr-tip">Game-hunting tip: <code>${esc(item.searchTip)}</code></p>
+      <div class="modal-actions">
         <a class="btn btn-primary btn-lg" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Open ${esc(item.name)} ${icon('external')}</a>
         ${favBtn}
       </div>
@@ -842,22 +865,6 @@ function route() {
   if (view === 'game' || view === 'site' || view === 'engine') {
     if (state.loaded) openModal(view, id);
   }
-}
-
-/* ========================================================================
- * Reveal-on-scroll
- * ====================================================================== */
-let revealObserver = null;
-function observeReveals() {
-  if (!('IntersectionObserver' in window)) { $$('.reveal').forEach((el) => el.classList.add('in')); return; }
-  if (!revealObserver) {
-    revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) { entry.target.classList.add('in'); revealObserver.unobserve(entry.target); }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-  }
-  $$('.reveal:not(.in)').forEach((el) => revealObserver.observe(el));
 }
 
 /* ========================================================================
@@ -1092,11 +1099,12 @@ function wireEvents() {
  * Boot
  * ====================================================================== */
 function renderSkeletons() {
-  const skel = (n) => Array.from({ length: n }, () => '<div class="skeleton skeleton-card"></div>').join('');
-  $('#featuredRow').innerHTML = skel(4);
-  $('#trendingGrid').innerHTML = skel(4);
-  $('#homeSites').innerHTML = skel(3);
-  $('#gamesGrid').innerHTML = skel(6);
+  const block = (h) => `<div class="skeleton" style="height:${h}px"></div>`;
+  $('#featuredRow').innerHTML = block(280) + block(280);
+  $('#trendingGrid').innerHTML = Array.from({ length: 5 }, () => `<li class="skeleton" style="height:53px;border-radius:6px"></li>`).join('');
+  $('#recentVerified').innerHTML = block(220);
+  $('#homeSites').innerHTML = block(90) + block(90);
+  $('#gamesGrid').innerHTML = Array.from({ length: 6 }, () => '<div class="skeleton skeleton-card"></div>').join('');
 }
 
 function renderAll() {

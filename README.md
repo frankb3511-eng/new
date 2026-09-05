@@ -47,7 +47,9 @@ data/
 scripts/
   generate-thumbs.mjs       Regenerates all SVG artwork from the data files
   dom-qa.mjs                DOM / layout / a11y QA suite (dev tool)
-  visual-test.mjs           Screenshot smoke test (dev tool)
+  pixel-audit.mjs           Screenshot pixel audit: monochrome + dark theme (dev tool)
+  shots.mjs                 Screenshot generator for review (dev tool)
+  sw-offline-test.mjs       Service-worker offline verification (dev tool)
 docs/
   RESEARCH.md               Research methodology + verification log
 .github/workflows/deploy.yml  Pages deployment via GitHub Actions
@@ -125,23 +127,45 @@ not read its response. It performs **no** port scanning, proxying, tunnelling,
 DNS manipulation, or block circumvention of any kind — it is a passive
 diagnostic, by design. Targets and control cases live in `data/network-tests.json`.
 
+## Design system
+
+The portal uses a strictly **monochrome, editorial/technical** design:
+
+- **Palette** — near-black surfaces (`#050505` → `#151515`), off-white text
+  (`#F5F5F5`), neutral greys, 1 px hairline borders instead of shadows.
+  No gradients, glow, glassmorphism or decorative colour anywhere.
+- **Colour is functional only** — the Network Check's three states
+  (reachable / likely blocked / undetermined) are the sole coloured elements.
+- **Type** — self-hosted: *Space Grotesk* (display), *Source Sans 3* (body),
+  *IBM Plex Mono* (labels, meta, numbers). ~92 KB of subset WOFF2, preloaded.
+- **Layout** — left-aligned editorial sections with numbered labels
+  (01 — Featured …), asymmetric hero with an index panel, hairline directory
+  rows instead of card grids where hierarchy allows, 8–10 px radii.
+- **Motion** — 150 ms opacity/colour/transform transitions only,
+  disabled under `prefers-reduced-motion`.
+
 ## Quality control performed
 
 - ✅ Every URL opened and checked against its **official** domain (Sep 5, 2026)
 - ✅ Dead, hijacked and unofficial mirror domains excluded (see `docs/RESEARCH.md`)
 - ✅ Free / freemium / account status recorded per entry; estimates marked as such
-- ✅ 58-check automated DOM/layout/a11y suite (`scripts/dom-qa.mjs`) — all passing
-- ✅ Desktop (1440 px), tablet (768 px) and mobile (390 px) layouts — zero horizontal overflow
+- ✅ 77-check automated DOM/layout/a11y suite (`scripts/dom-qa.mjs`) — all passing,
+  including a computed WCAG AA contrast audit and a strict monochrome audit
+- ✅ Overflow sweep at 375 / 390 / 430 / 768 / 1024 / 1280 / 1440 / 1920 px
+  across all key views — zero horizontal overflow
+- ✅ Pixel-level screenshot audit (`scripts/pixel-audit.mjs`): 0.000% chromatic
+  pixels outside the Network Check status colours; dark-theme luminance confirmed
+- ✅ Self-hosted fonts verified loaded (Space Grotesk / Source Sans 3 / IBM Plex Mono)
 - ✅ `prefers-reduced-motion` disables all animation
-- ✅ WCAG AA contrast verified for text/background pairs (≥ 4.5:1)
-- ✅ Error states (broken/offline data → friendly retry), offline mode via service worker
+- ✅ Error states (broken/offline data → friendly retry), offline mode via service
+  worker v2 (shell + fonts + data precached; verified by killing the server)
 - ✅ Network Check verified against reachable (green), unreachable (red, `.invalid`
   RFC-2606 control) and offline (grey) cases
 
 ## Performance notes
 
-- No frameworks, no webfonts — system font stack, single CSS file, two ES modules.
-- ~110 KB critical path (HTML + CSS + JS), thumbnails are ~4 KB procedural SVGs
+- No frameworks; three subset WOFF2 fonts (~92 KB total), single CSS file, two ES modules.
+- ~150 KB critical path (HTML + CSS + JS + fonts), thumbnails are ~4 KB procedural SVGs
   lazy-loaded with explicit dimensions (no layout shift).
 - Search inputs debounced; card grids rendered via single `innerHTML` passes.
 - Service worker: cache-first for the shell, stale-while-revalidate for data —

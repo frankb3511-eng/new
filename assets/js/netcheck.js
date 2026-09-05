@@ -124,11 +124,12 @@ function rowTemplate(t) {
   <article class="netrow" data-state="${state}" data-target="${t.id}" aria-label="${t.name} connectivity test">
     <span class="nr-icon" aria-hidden="true">${iconFor(state)}</span>
     <div class="nr-main">
-      <p class="nr-name">${t.name}${t.group === 'controls' ? ' <span class="badge badge-approx">control</span>' : ''}</p>
+      <p class="nr-name">${t.name}${t.group === 'controls' ? ' <span class="badge">control</span>' : ''}</p>
       <p class="nr-domain">${new URL(t.url).host}</p>
-      <p class="nr-status">${stateLabels[state]}${ms ? ` · <span class="nr-ms-inline">${ms}</span>` : ''}</p>
+      <p class="nr-status">${stateLabels[state]}</p>
     </div>
     <div class="nr-side">
+      ${ms ? `<span class="nr-ms">${ms}</span>` : ''}
       <button class="nr-retry" type="button" data-retry="${t.id}" title="Test ${t.name} again" aria-label="Test ${t.name} again">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"/></svg>
       </button>
@@ -179,9 +180,9 @@ function renderSummary() {
   el.hidden = false;
   const count = (s) => tested.filter((r) => r.state === s).length;
   el.innerHTML = `
-    <div class="netsummary-card s-green"><strong>${count('reachable')}</strong><span>Reachable</span></div>
-    <div class="netsummary-card s-red"><strong>${count('blocked')}</strong><span>Likely blocked / unreachable</span></div>
-    <div class="netsummary-card s-grey"><strong>${count('unknown')}</strong><span>Unable to determine</span></div>`;
+    <span class="s-green"><b>${count('reachable')}</b> reachable</span>
+    <span class="s-red"><b>${count('blocked')}</b> likely blocked / unreachable</span>
+    <span class="s-grey"><b>${count('unknown')}</b> unable to determine</span>`;
 }
 
 function renderMeta() {
@@ -285,6 +286,9 @@ export function initNetworkView({ tests, toast }) {
   cfg = { tests };
   showToast = toast;
   restore();
+
+  const targetsLabel = $('#netTargetsLabel');
+  if (targetsLabel) targetsLabel.textContent = `${tests.length} targets · honest three-state results`;
 
   $('#netRunAll').addEventListener('click', () => { runAll(); });
 

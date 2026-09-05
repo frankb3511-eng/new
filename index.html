@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>PLAYGRID — Verified Free Browser Games</title>
-<meta name="description" content="A curated portal of legitimate, free browser games and platforms — every entry verified, plus a built-in network connectivity check. No installs, no accounts required.">
-<meta name="theme-color" content="#0a0e15">
+<title>Playgrid — a verified index of browser games</title>
+<meta name="description" content="A curated index of legitimate, free browser games and platforms. Every entry checked against its official page, with a passive network connectivity diagnostic.">
+<meta name="theme-color" content="#050505">
 <meta name="color-scheme" content="dark">
-<meta property="og:type" content="website">
-<meta property="og:title" content="PLAYGRID — Verified Free Browser Games">
-<meta property="og:description" content="A curated portal of legitimate, free browser games and platforms — every entry verified, with a built-in network connectivity check.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preload" href="assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/source-sans-3-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/main.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"PLAYGRID","description":"Curated directory of legitimate free browser games and game platforms.","url":"./","inLanguage":"en"}
+{"@context":"https://schema.org","@type":"WebSite","name":"Playgrid","description":"Curated directory of legitimate free browser games and game platforms.","url":"./","inLanguage":"en"}
 </script>
 </head>
 <body>
@@ -21,54 +21,43 @@
 
 <!-- ============ ICON SPRITE ============ -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-  <symbol id="i-gamepad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="6"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></symbol>
-  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
-  <symbol id="i-dice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></symbol>
-  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
-  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
-  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
-  <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
-  <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
-  <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3" fill="currentColor" stroke="none"/></symbol>
-  <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
-  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
-  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 12 22 2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5"/></symbol>
-  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
-  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
-  <symbol id="i-smartphone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 18h.01"/></symbol>
-  <symbol id="i-chev-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
-  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
-  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-  <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
-  <symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-gamepad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4" fill="currentColor"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-chev-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.2.68.8.56A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></symbol>
-  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
-  <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
 </svg>
 
 <!-- ============ HEADER ============ -->
 <header class="site-header" id="siteHeader">
   <div class="container header-inner">
-    <a class="brand" href="#/home" aria-label="PLAYGRID home">
+    <a class="brand" href="#/home" aria-label="Playgrid home">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-gamepad"/></svg></span>
-      <span class="brand-name">PLAY<em>GRID</em></span>
+      <span class="brand-name">Playgrid</span>
     </a>
     <nav class="main-nav" aria-label="Primary navigation">
       <a href="#/home" data-nav="home">Home</a>
-      <a href="#/games" data-nav="games">Web Games</a>
-      <a href="#/sites" data-nav="sites">Game Sites</a>
-      <a href="#/engines" data-nav="engines">Search Engines</a>
-      <a href="#/network" data-nav="network">Network Check</a>
-      <a href="#/favorites" data-nav="favorites">Favorites</a>
+      <a href="#/games" data-nav="games">Games</a>
+      <a href="#/sites" data-nav="sites">Sites</a>
+      <a href="#/engines" data-nav="engines">Engines</a>
+      <a href="#/network" data-nav="network">Network</a>
+      <a href="#/favorites" data-nav="favorites">Saved</a>
     </nav>
     <div class="header-actions">
       <button class="icon-btn" id="randomBtn" type="button" title="Random game (R)" aria-label="Open a random game">
@@ -94,26 +83,26 @@
 <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
 <nav class="drawer" id="mobileDrawer" aria-label="Mobile navigation" aria-hidden="true">
   <div class="drawer-head">
-    <span class="brand-name">PLAY<em>GRID</em></span>
+    <span class="brand-name">Playgrid</span>
     <button class="icon-btn" id="drawerClose" type="button" aria-label="Close menu">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
     </button>
   </div>
-  <a href="#/home" data-nav="home"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
-  <a href="#/games" data-nav="games"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"/></svg>Web Games</a>
-  <a href="#/sites" data-nav="sites"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"/></svg>Game Sites</a>
-  <a href="#/engines" data-nav="engines"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-compass"/></svg>Search Engines</a>
-  <a href="#/network" data-nav="network"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-activity"/></svg>Network Check</a>
-  <a href="#/favorites" data-nav="favorites"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg>Favorites</a>
-  <button class="btn btn-primary btn-block" id="drawerRandom" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-dice"/></svg>Random game</button>
+  <a href="#/home" data-nav="home">Home</a>
+  <a href="#/games" data-nav="games">Web games</a>
+  <a href="#/sites" data-nav="sites">Game sites</a>
+  <a href="#/engines" data-nav="engines">Search engines</a>
+  <a href="#/network" data-nav="network">Network check</a>
+  <a href="#/favorites" data-nav="favorites">Favorites</a>
+  <button class="btn btn-secondary btn-block" id="drawerRandom" type="button">Open a random game</button>
 </nav>
 
 <!-- Search overlay -->
-<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search PLAYGRID" hidden>
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search Playgrid" hidden>
   <div class="search-panel">
     <div class="search-bar-big">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
-      <input id="searchInput" type="search" placeholder="Search games, sites, engines…" autocomplete="off" spellcheck="false"
+      <input id="searchInput" type="search" placeholder="Search games, platforms, engines…" autocomplete="off" spellcheck="false"
              role="combobox" aria-expanded="true" aria-controls="searchResults" aria-autocomplete="list">
       <button class="icon-btn" id="searchClose" type="button" aria-label="Close search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
@@ -130,63 +119,71 @@
 <!-- ============ HOME ============ -->
 <section class="view" id="view-home" aria-labelledby="homeTitle">
   <div class="hero">
-    <div class="hero-bg" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span></div>
-    <div class="container hero-inner">
-      <p class="hero-eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"/></svg><span>Every entry hand-verified · September 2026</span></p>
-      <h1 id="homeTitle">Play the web's best <span class="grad-text">browser games</span></h1>
-      <p class="hero-sub">A curated portal of legitimate, free-to-play games and platforms. No installs, no shady downloads — just verified links you can trust.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="#/games"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"/></svg>Explore games</a>
-        <button class="btn btn-ghost btn-lg" type="button" id="heroRandom"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-dice"/></svg>Random game</button>
-        <a class="btn btn-ghost btn-lg" href="#/network"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-activity"/></svg>Network check</a>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="hero-label"><span class="label-marker" aria-hidden="true"></span>Index — verified 05 Sep 2026</p>
+        <h1 id="homeTitle">A verified index of browser games.</h1>
+        <p class="hero-sub">Sixty-five games, twenty-one platforms and twelve search engines, each checked against its official page — with play style, account requirements and pricing recorded. Everything runs in the browser. Nothing to install, no account to browse.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#/games">Browse the catalogue</a>
+          <a class="btn btn-secondary btn-lg" href="#/network">Run a network check</a>
+        </div>
       </div>
-      <dl class="hero-stats" id="heroStats">
-        <div class="hero-stat"><dt>Verified games</dt><dd data-stat="games">—</dd></div>
-        <div class="hero-stat"><dt>Platforms</dt><dd data-stat="sites">—</dd></div>
-        <div class="hero-stat"><dt>Search engines</dt><dd data-stat="engines">—</dd></div>
-        <div class="hero-stat"><dt>Downloads needed</dt><dd data-stat="downloads">0</dd></div>
-      </dl>
+      <aside class="hero-panel" id="heroStats" aria-label="Catalogue index">
+        <div class="hero-panel-head">
+          <span>Catalogue</span>
+          <span>Sep 2026</span>
+        </div>
+        <a class="index-row" href="#/games"><span class="index-label">Games</span><span class="index-value" data-stat="games">—</span></a>
+        <a class="index-row" href="#/sites"><span class="index-label">Platforms</span><span class="index-value" data-stat="sites">—</span></a>
+        <a class="index-row" href="#/engines"><span class="index-label">Search engines</span><span class="index-value" data-stat="engines">—</span></a>
+        <a class="index-row" href="#/network"><span class="index-label">Network targets</span><span class="index-value" data-stat="targets">—</span></a>
+        <div class="index-row index-row-static"><span class="index-label">Downloads required</span><span class="index-value">0</span></div>
+        <div class="index-row index-row-static"><span class="index-label">Saved locally</span><span class="index-value" data-stat="favorites">0</span></div>
+        <button class="btn btn-secondary btn-block" id="heroRandom" type="button">Open a random entry</button>
+      </aside>
     </div>
   </div>
 
-  <div class="container section" id="featuredSection">
+  <div class="container section">
     <header class="section-head">
-      <div><p class="eyebrow">Hand-picked</p><h2>Featured games</h2></div>
-      <a class="link-more" href="#/games">View all <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <p class="section-index">01 — Featured</p>
+      <a class="link-more" href="#/games">Full catalogue <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
     </header>
-    <div class="card-scroller" id="featuredRow"></div>
+    <div class="featured-grid" id="featuredRow"></div>
+  </div>
+
+  <div class="container section section-tight">
+    <header class="section-head">
+      <p class="section-index">02 — Trending</p>
+      <a class="link-more" href="#/games?filter=popular">Popular in the catalogue <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    </header>
+    <ol class="chart-list" id="trendingGrid"></ol>
+  </div>
+
+  <div class="container section section-tight">
+    <header class="section-head">
+      <p class="section-index">03 — Recently verified</p>
+      <span class="section-note">Every entry re-checked 05 Sep 2026</span>
+    </header>
+    <div class="verify-table" id="recentVerified"></div>
   </div>
 
   <div class="container section">
     <header class="section-head">
-      <div><p class="eyebrow">Community favorites</p><h2>Trending now</h2></div>
-      <a class="link-more" href="#/games?filter=popular">Popular games <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <p class="section-index">04 — Platforms</p>
+      <a class="link-more" href="#/sites">All 21 platforms <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
     </header>
-    <div class="card-grid" id="trendingGrid"></div>
+    <div class="directory-grid" id="homeSites"></div>
   </div>
 
   <div class="container section">
-    <header class="section-head">
-      <div><p class="eyebrow">Fresh checks</p><h2>Recently verified</h2></div>
-    </header>
-    <ul class="verify-list" id="recentVerified"></ul>
-  </div>
-
-  <div class="container section">
-    <header class="section-head">
-      <div><p class="eyebrow">Where to browse</p><h2>Recommended game sites</h2></div>
-      <a class="link-more" href="#/sites">All platforms <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-    </header>
-    <div class="site-grid" id="homeSites"></div>
-  </div>
-
-  <div class="container section">
-    <div class="cta-banner">
-      <div class="cta-banner-text">
-        <h2>Can you reach your favorite game sites?</h2>
-        <p>Run a safe, browser-based connectivity check against the platforms in this directory. Green means reachable, red means likely blocked — no tricks, just honest diagnostics.</p>
+    <div class="diag-strip">
+      <div class="diag-strip-copy">
+        <p class="section-index">05 — Diagnostic</p>
+        <p class="diag-strip-text">Check whether the platforms in this index are reachable from your network — a passive, browser-side test with honest three-state results.</p>
       </div>
-      <a class="btn btn-primary btn-lg" href="#/network"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-activity"/></svg>Check my network</a>
+      <a class="btn btn-primary btn-lg" href="#/network">Check my network</a>
     </div>
   </div>
 </section>
@@ -195,34 +192,36 @@
 <section class="view" id="view-games" aria-labelledby="gamesTitle" hidden>
   <div class="container section">
     <header class="page-head">
-      <p class="eyebrow">The catalogue</p>
-      <h1 id="gamesTitle">Web Games</h1>
-      <p class="page-sub">Every game runs directly in your browser, on its official site. <span id="gamesCountLabel"></span></p>
+      <p class="section-index">Catalogue</p>
+      <div class="page-head-row">
+        <h1 id="gamesTitle">Web games</h1>
+        <p class="page-count" id="gamesCountLabel"></p>
+      </div>
+      <p class="page-sub">Every game runs in the browser on its official site. No installs, no mirrors, no "unblocked" clones.</p>
     </header>
     <div class="toolbar">
       <div class="toolbar-search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
-        <input type="search" id="gamesSearch" placeholder="Filter games…" autocomplete="off" aria-label="Filter games by name, genre, developer or tag">
+        <input type="search" id="gamesSearch" placeholder="Filter by name, genre, developer, tag…" autocomplete="off" aria-label="Filter games by name, genre, developer or tag">
       </div>
       <label class="sort-select">
         <span class="visually-hidden">Sort games</span>
         <select id="gamesSort" aria-label="Sort games">
-          <option value="popular">Popular first</option>
+          <option value="popular">Popular</option>
           <option value="az">A → Z</option>
           <option value="added">Recently added</option>
           <option value="verified">Recently verified</option>
         </select>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chev-down"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right" transform="rotate(90 12 12)"/></svg>
       </label>
     </div>
     <div class="chip-row" id="genreChips" role="group" aria-label="Filter by genre"></div>
     <div class="chip-row chip-row-filters" id="filterChips" role="group" aria-label="Filter by attribute"></div>
     <div class="card-grid card-grid-games" id="gamesGrid" aria-live="polite"></div>
     <div class="empty-state" id="gamesEmpty" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
       <h2>No games match</h2>
-      <p>Try removing a filter or two, or search for something else.</p>
-      <button class="btn btn-ghost" type="button" id="gamesClear">Clear filters</button>
+      <p>Remove a filter or two, or try a different term.</p>
+      <button class="btn btn-secondary" type="button" id="gamesClear">Clear filters</button>
     </div>
   </div>
 </section>
@@ -231,9 +230,12 @@
 <section class="view" id="view-sites" aria-labelledby="sitesTitle" hidden>
   <div class="container section">
     <header class="page-head">
-      <p class="eyebrow">The directory</p>
-      <h1 id="sitesTitle">Game Sites</h1>
-      <p class="page-sub">Legitimate browser-game platforms, publisher sites and archives — verified and linked to their official domains only.</p>
+      <p class="section-index">Directory</p>
+      <div class="page-head-row">
+        <h1 id="sitesTitle">Game sites</h1>
+        <p class="page-count">21 platforms, verified 05 Sep 2026</p>
+      </div>
+      <p class="page-sub">Legitimate platforms, publisher sites and archives — linked to official domains only. Counts marked with ~ are estimates, not measurements.</p>
     </header>
     <div class="toolbar">
       <div class="toolbar-search">
@@ -242,11 +244,10 @@
       </div>
       <div class="chip-row" id="siteTypeChips" role="group" aria-label="Filter platforms by type"></div>
     </div>
-    <div class="site-grid" id="sitesGrid" aria-live="polite"></div>
+    <div class="directory-list" id="sitesGrid" aria-live="polite"></div>
     <div class="empty-state" id="sitesEmpty" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"/></svg>
       <h2>No platforms match</h2>
-      <p>Try a different search term.</p>
+      <p>Try a different term.</p>
     </div>
   </div>
 </section>
@@ -255,11 +256,14 @@
 <section class="view" id="view-engines" aria-labelledby="enginesTitle" hidden>
   <div class="container section">
     <header class="page-head">
-      <p class="eyebrow">Find more</p>
-      <h1 id="enginesTitle">Search Engines</h1>
-      <p class="page-sub">Legitimate search engines that are useful for discovering browser games — with privacy notes and game-finding tips for each.</p>
+      <p class="section-index">Reference</p>
+      <div class="page-head-row">
+        <h1 id="enginesTitle">Search engines</h1>
+        <p class="page-count">12 engines, verified 05 Sep 2026</p>
+      </div>
+      <p class="page-sub">Legitimate engines useful for finding browser games, with privacy characteristics and a working query example for each.</p>
     </header>
-    <div class="engine-list" id="enginesList"></div>
+    <div class="directory-list directory-list-single" id="enginesList"></div>
   </div>
 </section>
 
@@ -267,27 +271,46 @@
 <section class="view" id="view-network" aria-labelledby="networkTitle" hidden>
   <div class="container section">
     <header class="page-head">
-      <p class="eyebrow">Connectivity diagnostic</p>
-      <h1 id="networkTitle">Network Check</h1>
-      <p class="page-sub">Test whether the game platforms in this directory are reachable from your current browser and network — safely, from this page.</p>
-    </header>
-    <div class="netcallout" id="netCallout">
-      <div class="netcallout-head">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"/></svg>
-        <h2>How this works — and what it will never do</h2>
+      <p class="section-index">Diagnostic</p>
+      <div class="page-head-row">
+        <h1 id="networkTitle">Network check</h1>
+        <p class="page-count" id="netTargetsLabel"></p>
       </div>
-      <p>This check performs ordinary browser requests (a no-cors <code>fetch</code> and a favicon image probe) against each listed gaming domain, with timeouts. Browser security means some results can be inconclusive — the tool never guesses that a site is blocked just because JavaScript can't read its response.</p>
-      <ul>
-        <li><span class="dot dot-green" aria-hidden="true"></span><strong>Reachable</strong> — your browser completed a request to the site.</li>
-        <li><span class="dot dot-red" aria-hidden="true"></span><strong>Likely blocked / unreachable</strong> — requests failed or timed out consistently.</li>
-        <li><span class="dot dot-grey" aria-hidden="true"></span><strong>Unable to determine</strong> — the test was inconclusive (CORS, browser or extension interference).</li>
-      </ul>
-      <p class="netcallout-foot">This is a passive diagnostic: no port scanning, no proxies, no tunnels, no DNS tricks, and no attempt to bypass any network filter or block you may be behind.</p>
+      <p class="page-sub">Test whether the platforms in this index are reachable from your current browser and network — from this page, passively.</p>
+    </header>
+
+    <div class="netcallout" id="netCallout">
+      <div class="netcallout-grid">
+        <div>
+          <h2>Method</h2>
+          <ol class="method-list">
+            <li>A no-cors <code>GET</code> fetch — an opaque response proves the request completed at network level.</li>
+            <li>A favicon image probe as an independent fallback.</li>
+            <li>One repeat fetch — a target is only reported red if it fails <em>consistently</em>.</li>
+          </ol>
+        </div>
+        <div>
+          <h2>Results</h2>
+          <ul class="result-legend">
+            <li><span class="dot dot-green" aria-hidden="true"></span>Reachable — a request completed.</li>
+            <li><span class="dot dot-red" aria-hidden="true"></span>Likely blocked / unreachable — consistent failure while the local control passed.</li>
+            <li><span class="dot dot-grey" aria-hidden="true"></span>Unable to determine — CORS, an extension, or an offline browser prevented a conclusion.</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Never</h2>
+          <ul class="never-list">
+            <li>No proxies, tunnels or domain fronting</li>
+            <li>No port scanning or DNS manipulation</li>
+            <li>No attempts to bypass any filter or block</li>
+          </ul>
+          <p class="netcallout-foot">A blocked-looking result is never stated as fact — browser security limits what a page can know.</p>
+        </div>
+      </div>
     </div>
+
     <div class="netcontrols">
-      <button class="btn btn-primary btn-lg" id="netRunAll" type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-activity"/></svg>Check my network
-      </button>
+      <button class="btn btn-primary btn-lg" id="netRunAll" type="button">Check my network</button>
       <span class="netmeta" id="netMeta" role="status"></span>
     </div>
     <div class="netsummary" id="netSummary" hidden></div>
@@ -299,27 +322,26 @@
 <section class="view" id="view-search" aria-labelledby="searchTitle" hidden>
   <div class="container section">
     <header class="page-head">
-      <p class="eyebrow">Search everything</p>
-      <h1 id="searchTitle">Search</h1>
-      <p class="page-sub">One search across verified games, platforms and search engines.</p>
+      <p class="section-index">Search</p>
+      <h1 id="searchTitle">Search everything</h1>
+      <p class="page-sub">One query across verified games, platforms and search engines. Press <kbd>/</kbd> anywhere to search faster.</p>
     </header>
     <div class="searchpage-bar">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
       <input type="search" id="searchPageInput" placeholder="Try “puzzle”, “multiplayer”, “itch.io”, “privacy”…" autocomplete="off" aria-label="Search games, sites and engines">
-      <button class="btn btn-ghost" id="searchPageClear" type="button" hidden>Clear</button>
+      <button class="btn btn-secondary" id="searchPageClear" type="button" hidden>Clear</button>
     </div>
     <div class="chip-row" id="searchScopeChips" role="group" aria-label="Search scope"></div>
     <div id="recentSearches" class="recent-searches"></div>
     <div class="search-results-page">
       <div id="searchPageStats" class="search-stats"></div>
-      <div class="card-grid card-grid-games" id="searchPageResults"></div>
+      <div id="searchPageResults"></div>
       <div class="empty-state" id="searchPageEmpty" hidden>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
         <h2>No results</h2>
-        <p id="searchEmptyHelp">Nothing matched. Try fewer words, or browse the <a href="#/games">full catalogue</a>.</p>
+        <p id="searchEmptyHelp"></p>
       </div>
       <div id="searchPageIdle" class="search-idle">
-        <p>Start typing to search <span id="searchIdleCounts"></span>. Press <kbd>/</kbd> anywhere to search faster.</p>
+        <p>Start typing to search <span id="searchIdleCounts"></span>.</p>
       </div>
     </div>
   </div>
@@ -329,18 +351,20 @@
 <section class="view" id="view-favorites" aria-labelledby="favTitle" hidden>
   <div class="container section">
     <header class="page-head">
-      <p class="eyebrow">Saved locally</p>
-      <h1 id="favTitle">Favorites</h1>
-      <p class="page-sub">Your saved games, platforms and engines — stored only in this browser's localStorage. No account, ever.</p>
+      <p class="section-index">Local</p>
+      <div class="page-head-row">
+        <h1 id="favTitle">Favorites</h1>
+        <p class="page-count">Stored in this browser only</p>
+      </div>
+      <p class="page-sub">No account, no sync — entries are saved to localStorage and stay on this device.</p>
     </header>
     <div class="chip-row" id="favTabs" role="tablist" aria-label="Favorites type"></div>
     <div class="card-grid card-grid-games" id="favGames"></div>
-    <div class="site-grid" id="favSites" hidden></div>
-    <div class="engine-list" id="favEngines" hidden></div>
+    <div class="directory-list" id="favSites" hidden></div>
+    <div class="directory-list directory-list-single" id="favEngines" hidden></div>
     <div class="empty-state" id="favEmpty" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg>
       <h2>Nothing saved yet</h2>
-      <p>Tap the heart on any game or platform to keep it here.</p>
+      <p>Use the heart icon on any game or platform to keep it here.</p>
       <a class="btn btn-primary" href="#/games">Browse games</a>
     </div>
     <div class="fav-footer" id="favFooter" hidden>
@@ -354,17 +378,17 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <span class="brand-name">PLAY<em>GRID</em></span>
-      <p>An open, static portal for legitimate browser gaming. All data hand-verified in September 2026 — see the <a href="https://github.com/frankb3511-eng/new" rel="noopener">repository</a> for sources and verification notes.</p>
+      <span class="brand-name">Playgrid</span>
+      <p>A static index of the browser-game web. All entries verified against official pages on 05 Sep 2026 — see the repository for the research log.</p>
     </div>
     <nav class="footer-col" aria-label="Games">
-      <h3>Explore</h3>
+      <h3>Catalogue</h3>
       <a href="#/games">Web games</a>
       <a href="#/games?filter=multiplayer">Multiplayer</a>
       <a href="#/games?filter=mobile">Mobile-friendly</a>
       <a href="#/games?filter=opensource">Open source</a>
     </nav>
-    <nav class="footer-col" aria-label="Platforms">
+    <nav class="footer-col" aria-label="Directory">
       <h3>Directory</h3>
       <a href="#/sites">Game sites</a>
       <a href="#/engines">Search engines</a>
@@ -373,11 +397,11 @@
     </nav>
     <div class="footer-col">
       <h3>Notes</h3>
-      <p class="footer-note">Every game links to its <strong>official</strong> page. Unofficial mirrors, “unblocked” clones and piracy sites are deliberately excluded. Counts marked “~” or “approx.” are estimates, not measurements.</p>
+      <p class="footer-note">Every link points to an official page. Unofficial mirrors and "unblocked" clones are excluded on principle. Counts marked ~ are platform estimates, not measurements.</p>
     </div>
   </div>
   <div class="container footer-bottom">
-    <span>PLAYGRID · static site for GitHub Pages · no trackers</span>
+    <span>Playgrid — static site for GitHub Pages — no trackers</span>
     <a class="footer-gh" href="https://github.com/frankb3511-eng/new" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github"/></svg>Source</a>
   </div>
 </footer>
@@ -395,7 +419,7 @@
 
 <div class="toast-root" id="toastRoot" aria-live="polite" aria-atomic="false"></div>
 
-<noscript><div class="noscript-note">PLAYGRID needs JavaScript to load its game database. Please enable JavaScript to browse the catalogue.</div></noscript>
+<noscript><div class="noscript-note">Playgrid needs JavaScript to load its game database. Please enable JavaScript to browse the catalogue.</div></noscript>
 
 <script type="module" src="assets/js/app.js"></script>
 </body>
